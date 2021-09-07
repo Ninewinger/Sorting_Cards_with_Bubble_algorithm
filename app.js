@@ -14,13 +14,14 @@ console.log(cartasDos)
 function generadorCartasRandom(num = []) {
     const listaNumero = ["A", 2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K"];
     const listaPinta = ["♥", "♦", "♣", "♠"];
-    for (let i = 0; i <= num; i++) {
+    for (let i = 0; i < num; i++) {
         const carta = document.createElement("div")
+        carta.className = "carta"
         const generadorPinta = listaPinta[Math.floor(Math.random() * listaPinta.length)]
         const numeroRand = Math.floor(Math.random() * listaNumero.length)
         const generadorValor = listaNumero[numeroRand]
         carta.innerHTML = generadorPinta + generadorValor + generadorPinta;
-        cartas.push({ valor: numeroRand+1, pinta: generadorPinta })
+        cartas.push({ valor: numeroRand, pinta: generadorPinta })
         cardContainer.appendChild(carta)
         console.log(carta)
     }
@@ -28,17 +29,23 @@ function generadorCartasRandom(num = []) {
 }
 
 function impresorCartas(arr = []) {
-    for (let i = 0; i <= arr.length; i++) {
+    const listaNumero = ["A", 2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K"];
+    const contCarta = document.createElement("div");
+    contCarta.className = "d-flex contCarta"
+    bubbleLog.appendChild(contCarta);
+    for (let i = 0; i < arr.length; i++) {
         const carta = document.createElement("div")
-        carta.innerHTML = arr[i].pinta + arr[i].valor + arr[i].pinta;
-        bubbleLog.appendChild(carta)
+        carta.className = "d-flex carta"
+        const generadorValor = listaNumero[arr[i].valor]
+        carta.innerHTML = arr[i].pinta + generadorValor + arr[i].pinta;
+        contCarta.appendChild(carta)
     }
 }
 window.onload = function () {
     draw.addEventListener("click", () => {
-        generadorCartasRandom(input.value-1)
+        generadorCartasRandom(input.value)
         console.log(cartas)
-        for(let i = 0; i <= cartas.length; i++){
+        for(let i = 0; i < cartas.length; i++){
             cartasDos.push(cartas[i])
         }
     })
@@ -50,22 +57,20 @@ window.onload = function () {
 }
 const bubbleSort = (arr = []) => {
     let wall = arr.length - 1;
-    let track = 0;
-    while (wall >= 0) {
+    while (wall > 0) {
         let index = 0;
         while (index < wall) {
             if (arr[index].valor > arr[index + 1].valor) {
                 let aux = arr[index + 1];
                 arr[index + 1] = arr[index];
                 arr[index] = aux;
-                track++;
-                
+                impresorCartas(arr)
             }
             index++;
         }
         wall--;
     }
-    console.log(arr)
+    
     return arr;
 }
 
