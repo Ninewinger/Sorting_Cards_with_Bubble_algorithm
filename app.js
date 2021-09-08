@@ -6,21 +6,31 @@ const draw = document.getElementById("draw")
 const sort = document.getElementById("sort")
 
 const cartas = []
-console.log(cartas)
-const cartasDos = []
-
-console.log(cartasDos)
 
 function generadorCartasRandom(num = []) {
     const listaNumero = ["A", 2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K"];
     const listaPinta = ["♥", "♦", "♣", "♠"];
     for (let i = 0; i < num; i++) {
         const carta = document.createElement("div")
-        carta.className = "carta"
+        const numero = document.createElement("div")
+        const pinta1 = document.createElement("div")
+        const pinta2 = document.createElement("div")
+        numero.className = "d-flex align-items-center numero"
+        pinta1.className = "pinta"
+        pinta2.className = "pinta d-flex align-items-end"
+        carta.className = "carta d-flex justify-content-around"
         const generadorPinta = listaPinta[Math.floor(Math.random() * listaPinta.length)]
+        if (generadorPinta === "♦" || generadorPinta === "♥") {
+            carta.classList.add("text-danger")
+        }
         const numeroRand = Math.floor(Math.random() * listaNumero.length)
         const generadorValor = listaNumero[numeroRand]
-        carta.innerHTML = generadorPinta + generadorValor + generadorPinta;
+        pinta1.innerHTML = generadorPinta
+        pinta2.innerHTML = generadorPinta
+        numero.innerHTML = generadorValor
+        carta.appendChild(pinta1)
+        carta.appendChild(numero)
+        carta.appendChild(pinta2)
         cartas.push({ valor: numeroRand, pinta: generadorPinta })
         cardContainer.appendChild(carta)
         console.log(carta)
@@ -35,27 +45,42 @@ function impresorCartas(arr = []) {
     bubbleLog.appendChild(contCarta);
     for (let i = 0; i < arr.length; i++) {
         const carta = document.createElement("div")
-        carta.className = "d-flex carta"
+        const numero = document.createElement("div")
+        const pinta1 = document.createElement("div")
+        const pinta2 = document.createElement("div")
+        carta.className = "d-flex carta justify-content-around"
+        pinta1.className = "pinta"
+        pinta2.className = "pinta d-flex align-items-end"
+        numero.className = "d-flex align-items-center numero"
         const generadorValor = listaNumero[arr[i].valor]
-        carta.innerHTML = arr[i].pinta + generadorValor + arr[i].pinta;
+        const generadorPinta = arr[i].pinta
+        if (generadorPinta === "♦" || generadorPinta === "♥") {
+            carta.classList.add("text-danger")
+        }
+        pinta1.innerHTML = generadorPinta
+        pinta2.innerHTML = generadorPinta
+        numero.innerHTML = generadorValor
+        carta.appendChild(pinta1)
+        carta.appendChild(numero)
+        carta.appendChild(pinta2)
         contCarta.appendChild(carta)
     }
 }
 window.onload = function () {
     draw.addEventListener("click", () => {
+        cardContainer.innerHTML = "";
+        bubbleLog.innerHTML = "";
         generadorCartasRandom(input.value)
-        console.log(cartas)
-        for(let i = 0; i < cartas.length; i++){
-            cartasDos.push(cartas[i])
-        }
     })
 
     sort.addEventListener("click", () => {
-        bubbleSort(cartasDos)
-        console.log(cartasDos)
+        bubbleLog.innerHTML = "";
+        bubbleSort(cartas)
     })
 }
+
 const bubbleSort = (arr = []) => {
+    let indice = 0;
     let wall = arr.length - 1;
     while (wall > 0) {
         let index = 0;
@@ -64,6 +89,10 @@ const bubbleSort = (arr = []) => {
                 let aux = arr[index + 1];
                 arr[index + 1] = arr[index];
                 arr[index] = aux;
+                const p = document.createElement("p")
+                indice += 1;
+                p.innerHTML = indice;
+                bubbleLog.appendChild(p)
                 impresorCartas(arr)
             }
             index++;
