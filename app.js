@@ -5,7 +5,7 @@ const input = document.getElementById("input")
 const draw = document.getElementById("draw")
 const sort = document.getElementById("sort")
 
-const cartas = []
+let cartas = []
 
 function generadorCartasRandom(num = []) {
     const listaNumero = ["A", 2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K"];
@@ -76,6 +76,7 @@ window.onload = function () {
     sort.addEventListener("click", () => {
         bubbleLog.innerHTML = "";
         bubbleSort(cartas)
+        cartas=[]
     })
 }
 
